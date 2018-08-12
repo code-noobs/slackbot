@@ -65,14 +65,7 @@ function handleMessage(message) {
         buf1 = message;
         buf2 = buf1.slice(13, buf1.length);
         message = buf2.toString('ascii', 0, buf2.length);
-        console.log(message); // first message
 
-        // Select part of message to remove
-        // returns null
-        //returns input.. and stuff posted here: https://webbhost.slack.com/archives/CBLERPJCA/p1531193642000053
-        
-
-        /* Let's try not using regex shall we? */
         var n = message.indexOf('|');
         var o = message.indexOf('>');
         var n = n+1;
