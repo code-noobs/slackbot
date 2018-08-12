@@ -1,0 +1,26 @@
+{
+  "name": "slackbot",
+  "version": "1.0.0",
+  "description": "Slackbot for DNS and whois info",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-noobs/slackbot.git"
+  },
+  "author": "Kyle OBrien",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/code-noobs/slackbot/issues"
+  },
+  "homepage": "https://github.com/code-noobs/slackbot#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^6.0.0",
+    "https": "^1.0.0",
+    "querystring": "^0.2.0",
+    "slackbots": "^1.1.0"
+  }
+}
