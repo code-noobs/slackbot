@@ -37,17 +37,15 @@ bot.on('message', (data) => {
 
 // Respond to Data
 function handleMessage(message) {
-    if(message.includes('dns')) {
-        // Take the data I want and re-organize for the API to use
-        // This removes the user ID text <@XXXXXXXXX>
+    function removeID(message) {
         var buf1 = Buffer.allocUnsafe(26);
         buf1 = message;
         buf2 = buf1.slice(13, buf1.length);
-        message = buf2.toString('ascii', 0, buf2.length);
-
-        /* There may be a better way with the Slack API, but this will work
-        returns URL as a string without extra formatting. Pre-formatted text appears like:
-        <http://webbhost.net|webbhost.net> */
+        return buf2.toString('ascii', 0, buf2.length);
+        }
+    function removeSlackURL(message){
+        console.log("test");
+        console.log(message);
         var n = message.indexOf('|');
         var o = message.indexOf('>');
         var n = n+1;
@@ -56,24 +54,28 @@ function handleMessage(message) {
         var p = s1.indexOf('>');
         var s2 = s1.substr(0, p);
         message = s2;
+        return message;
+        
+    }
+    if(message.includes('dns')) {
+        // Take the data I want and re-organize for the API to use
+        // This removes the user ID text <@XXXXXXXXX>
+        
+        
+        removeID(message);
+        removeSlackURL(message);
         dnsLookup(message);
+        /* There may be a better way with the Slack API, but this will work
+        returns URL as a string without extra formatting. Pre-formatted text appears like:
+        <http://webbhost.net|webbhost.net> */
+        
         
 	} else if(message.includes(' whois')) {
         // Take the data I want and re-organize for the API to use
         // This should probably be it's own function
-        var buf1 = Buffer.allocUnsafe(26);
-        buf1 = message;
-        buf2 = buf1.slice(13, buf1.length);
-        message = buf2.toString('ascii', 0, buf2.length);
+        removeID(message)
 
-        var n = message.indexOf('|');
-        var o = message.indexOf('>');
-        var n = n+1;
-        var o = o-2;
-        var s1 = message.substr(n, o);
-        var p = s1.indexOf('>');
-        var s2 = s1.substr(0, p);
-        message = s2;
+        removeSlackURL(message);
 		whoisLookup(message);
 	}
 }
