@@ -3,8 +3,10 @@ const axios = require('axios');
 const https = require('https');
 const querystring = require('querystring');
 const env = require('dotenv');
+
 env.config({path: 
         '.env'});
+
 const bot = new SlackBot({
 	token: process.env.SLACK_API_TOKEN,
 	name: 'Code Noobs Bot'
@@ -15,7 +17,7 @@ const dnsApi = 'https://dns-api.org/';
 // Start Handler
 bot.on('start', () => {
 	const params = {
-	icon_emoji: ':wave:'
+	icon_emoji: ':linkms:'
 	};
 
 	bot.postMessageToChannel('bot-testing', "Don't panic", params);
@@ -38,14 +40,16 @@ bot.on('message', (data) => {
 // Respond to Data
 function handleMessage(message) {
     function removeID(message) {
+        // Use Node Buffer to remove ID
         var buf1 = Buffer.allocUnsafe(26);
         buf1 = message;
         buf2 = buf1.slice(13, buf1.length);
         return buf2.toString('ascii', 0, buf2.length);
         }
     function removeSlackURL(message){
-        console.log("test");
-        console.log(message);
+        /* There may be a better way with the Slack API, but this will work
+        returns URL as a string without extra formatting. Pre-formatted text appears like:
+        <http://webbhost.net|webbhost.net> */
         var n = message.indexOf('|');
         var o = message.indexOf('>');
         var n = n+1;
@@ -55,26 +59,13 @@ function handleMessage(message) {
         var s2 = s1.substr(0, p);
         message = s2;
         return message;
-        
     }
     if(message.includes('dns')) {
-        // Take the data I want and re-organize for the API to use
-        // This removes the user ID text <@XXXXXXXXX>
-        
-        
         removeID(message);
         removeSlackURL(message);
         dnsLookup(message);
-        /* There may be a better way with the Slack API, but this will work
-        returns URL as a string without extra formatting. Pre-formatted text appears like:
-        <http://webbhost.net|webbhost.net> */
-        
-        
 	} else if(message.includes(' whois')) {
-        // Take the data I want and re-organize for the API to use
-        // This should probably be it's own function
         removeID(message)
-
         removeSlackURL(message);
 		whoisLookup(message);
 	}
@@ -82,72 +73,54 @@ function handleMessage(message) {
 
 
 
-// Pull dns-api.org information
+// Pull and serve DNS NS, A, CNAME, MX, TXT information
 function dnsLookup(message) {
     axios.get(dnsApi + '\/NS' + '\/'+ message).then(res => {
-    
         const dns = res.data;
-    
         console.log(dns); 
-    
         const params = {
           icon_emoji: ''
         };
-    
         bot.postMessageToChannel('bot-testing', dns, params);
       });
     axios.get(dnsApi + '\/A' + '\/'+ message).then(res => {
-    
-	const dns = res.data;
-
-	console.log(dns); 
-
-    const params = {
-      icon_emoji: ''
-    };
+	    const dns = res.data;
+	    console.log(dns); 
+        const params = {
+            icon_emoji: ''
+        };
+        bot.postMessageToChannel('bot-testing', dns, params);
+    });
     axios.get(dnsApi + '\/CNAME' + '\/'+ message).then(res => {
-    
         const dns = res.data;
-    
         console.log(dns); 
-    
         const params = {
           icon_emoji: ''
         };
-    
         bot.postMessageToChannel('bot-testing', dns, params);
-      });
-
-    bot.postMessageToChannel('bot-testing', dns, params);
   });
   axios.get(dnsApi + '\/MX' + '\/'+ message).then(res => {
-    
 	const dns = res.data;
-
 	console.log(dns); 
-
     const params = {
       icon_emoji: ''
     };
 
-    bot.postMessageToChannel('bot-testing', dns, params);
+        bot.postMessageToChannel('bot-testing', dns, params);
   });
   axios.get(dnsApi + '\/TXT' + '\/'+ message).then(res => {
-    
 	const dns = res.data;
-
 	console.log(dns); 
-
     const params = {
       icon_emoji: ''
     };
 
-    bot.postMessageToChannel('bot-testing', dns, params);
+        bot.postMessageToChannel('bot-testing', dns, params);
   });
 
 }
 
-// integrate whois API
+// Pull and serve who.is data
 function whoisLookup(message){
 var url = "https://www.whoisxmlapi.com/"
     +"whoisserver/WhoisService?";
