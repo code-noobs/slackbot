@@ -75,49 +75,69 @@ function handleMessage(message) {
 
 // Pull and serve DNS NS, A, CNAME, MX, TXT information
 function dnsLookup(message) {
-    axios.get(dnsApi + '\/NS' + '\/'+ message).then(res => {
-        const dns = res.data;
-        console.log(dns); 
-        const params = {
-          icon_emoji: ''
-        };
-        bot.postMessageToChannel('bot-testing', dns, params);
-      });
-    axios.get(dnsApi + '\/A' + '\/'+ message).then(res => {
-	    const dns = res.data;
-	    console.log(dns); 
-        const params = {
+    async function postNS() {
+        try {
+          const response = await axios.get(dnsApi + '\/NS' + '\/'+ message);
+          console.log(response);
+          const params = {
             icon_emoji: ''
-        };
-        bot.postMessageToChannel('bot-testing', dns, params);
-    });
-    axios.get(dnsApi + '\/CNAME' + '\/'+ message).then(res => {
-        const dns = res.data;
-        console.log(dns); 
-        const params = {
-          icon_emoji: ''
-        };
-        bot.postMessageToChannel('bot-testing', dns, params);
-  });
-  axios.get(dnsApi + '\/MX' + '\/'+ message).then(res => {
-	const dns = res.data;
-	console.log(dns); 
-    const params = {
-      icon_emoji: ''
-    };
+          };
+          bot.postMessageToChannel('bot-testing', dns, params);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      async function postA() {
+        try {
+          const response = await axios.get(dnsApi + '\/A' + '\/'+ message);
+          console.log(response);
+          const params = {
+            icon_emoji: ''
+          };
+          bot.postMessageToChannel('bot-testing', dns, params);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      async function postCNAME() {
+        try {
+          const response = await axios.get(dnsApi + '\/CNAME' + '\/'+ message);
+          console.log(response);
+          const params = {
+            icon_emoji: ''
+          };
+          bot.postMessageToChannel('bot-testing', dns, params);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      async function postMX() {
+        try {
+          const response = await axios.get(dnsApi + '\/MX' + '\/'+ message);
+          console.log(response);
+          const params = {
+            icon_emoji: ''
+          };
+          bot.postMessageToChannel('bot-testing', dns, params);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+   
+      async function postTXT() {
+        try {
+          const response = await axios.get(dnsApi + '\/TXT' + '\/'+ message);
+          console.log(response);
+          const params = {
+            icon_emoji: ''
+          };
+          bot.postMessageToChannel('bot-testing', dns, params);
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
-        bot.postMessageToChannel('bot-testing', dns, params);
-  });
-  axios.get(dnsApi + '\/TXT' + '\/'+ message).then(res => {
-	const dns = res.data;
-	console.log(dns); 
-    const params = {
-      icon_emoji: ''
-    };
-
-        bot.postMessageToChannel('bot-testing', dns, params);
-  });
-
+  
 }
 
 // Pull and serve who.is data
