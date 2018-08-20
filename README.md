@@ -6,7 +6,7 @@ Inspired by https://github.com/bradtraversy/slack_jokebot/ great tutorial!
 
 End-goal is to have a Slackbot that can take domains and give who.is/DNS records, possibly github repos.
 ### APIs used
-[Slack API](https://api.slack.com/) - [Who.Is API](https://whoisxmlapi.com/) - [DNS API](https://dns-api.org)
+[Slack](https://api.slack.com/) - [Who.Is](https://whoisxmlapi.com/) - [DNS](https://dns-api.org)
 
 Working commands: 
 
