@@ -8,7 +8,7 @@ End-goal is to have a Slackbot that can take domains and give who.is/DNS records
 ### APIs used
 [Slack](https://api.slack.com/) - [Who.Is](https://whoisxmlapi.com/) - [DNS](https://dns-api.org)
 
-Working commands: 
+### Working commands: 
 
 dns + (domain) returns A, NS, MX, TXT records for (domain)
 
@@ -17,7 +17,11 @@ whois + (domain) returns contact email, registrant, admin contact, as well as cr
 ## Installation
 **This is a Node.JS app, you must have Node.JS installed on the machine prior to following these instructions**
 
-Most of the work should be in getting the API keys you need from each and plugging it in. For Slack you'll need to specify that you're creating a bot, and this process can be found in [this tutorial](https://www.youtube.com/watch?v=nyyXTIL3Hkw). You'll also need to create a #bot-testing channel on your Slack workspace, but you can replace the code to modify this (typing this out, I should probably make this a varible). Check the Who.Is API documents for finding your API key there. It'd be recommended to use something like dotenv to plug these in, but if you just want to get it running you can just replace the variables on lines 11 (Slack) and 149 (Who.Is). 
+Most of the work should be in getting the API keys you need from each and plugging it in. 
+
+For Slack you'll need to specify that you're creating a bot, and that process can be found in [this tutorial](https://www.youtube.com/watch?v=nyyXTIL3Hkw). You'll also need to create a #bot-testing channel on your Slack workspace, but you can replace the code to modify this (typing this out, I should probably make this a variable).
+
+Check [here](https://whoisapi.whoisxmlapi.com/products) for your Who.Is API key once you've signed up. You'll also be taken to that page when you sign in. It'd be recommended to use something like dotenv to plug these in, but if you just want to get it running you can just replace the variables on lines 11 (Slack) and 149 (Who.Is). 
 
 The DNS API should run on it's own, but if you're putting this into production you should [install it on your own instance](https://github.com/skx/dns-api-go).
 
