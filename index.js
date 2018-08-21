@@ -57,17 +57,16 @@ function handleMessage(message) {
         var s1 = message.substr(n, o);
         var p = s1.indexOf('>');
         var s2 = s1.substr(0, p);
-        message = s2;
-        return message;
+        return s2;
     }
-    if(message.includes('dns')) {
-        removeID(message);
-        removeSlackURL(message);
-        dnsLookup(message);
+    if(message.includes(' dns')) {
+        message = removeID(message);
+        message = removeSlackURL(message);
+        message = dnsLookup(message);
 	} else if(message.includes(' whois')) {
-        removeID(message)
-        removeSlackURL(message);
-		whoisLookup(message);
+        message = removeID(message)
+        message = removeSlackURL(message);
+		    message = whoisLookup(message);
 	}
 }
 
@@ -82,7 +81,7 @@ function dnsLookup(message) {
           const params = {
             icon_emoji: ''
           };
-          bot.postMessageToChannel('bot-testing', dns, params);
+          bot.postMessageToChannel('bot-testing', response.data, params);
         } catch (error) {
           console.error(error);
         }
@@ -94,7 +93,7 @@ function dnsLookup(message) {
           const params = {
             icon_emoji: ''
           };
-          bot.postMessageToChannel('bot-testing', dns, params);
+          bot.postMessageToChannel('bot-testing', response.data, params);
         } catch (error) {
           console.error(error);
         }
@@ -106,7 +105,7 @@ function dnsLookup(message) {
           const params = {
             icon_emoji: ''
           };
-          bot.postMessageToChannel('bot-testing', dns, params);
+          bot.postMessageToChannel('bot-testing', response.data, params);
         } catch (error) {
           console.error(error);
         }
@@ -118,7 +117,7 @@ function dnsLookup(message) {
           const params = {
             icon_emoji: ''
           };
-          bot.postMessageToChannel('bot-testing', dns, params);
+          bot.postMessageToChannel('bot-testing', response.data, params);
         } catch (error) {
           console.error(error);
         }
@@ -131,12 +130,16 @@ function dnsLookup(message) {
           const params = {
             icon_emoji: ''
           };
-          bot.postMessageToChannel('bot-testing', dns, params);
+          bot.postMessageToChannel('bot-testing', response.data, params);
         } catch (error) {
           console.error(error);
         }
       }
-
+      postNS(message);
+      postA(message);
+      postCNAME(message);
+      postMX(message);
+      postTXT(message);
   
 }
 
