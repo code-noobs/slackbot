@@ -47,6 +47,7 @@ function handleMessage(message) {
         return buf2.toString('ascii', 0, buf2.length);
         }
     function removeSlackURL(message){
+      if(message.includes('|')){
         /* There may be a better way with the Slack API, but this will work
         returns URL as a string without extra formatting. Pre-formatted text appears like:
         <http://webbhost.net|webbhost.net> */
@@ -57,7 +58,19 @@ function handleMessage(message) {
         var s1 = message.substr(n, o);
         var p = s1.indexOf('>');
         var s2 = s1.substr(0, p);
+        console.log(s2);
         return s2;
+      }
+      else if(message.includes(' https')){
+        var remBrackets = message.substr(1, message.length-1);
+        var remExt = remBrackets.substr(9, mesage.length);
+        return remExt;
+      }
+      else if(message.includes(' http')){
+        var remBrackets = message.substr(1, message.length-1);
+        var remExt = remBrackets.substr(8, mesage.length);
+        return remExt;
+      }
     }
     if(message.includes(' dns')) {
         message = removeID(message);
@@ -84,7 +97,6 @@ function dnsLookup(message) {
             icon_emoji: ''
           };
           bot.postMessageToChannel('bot-testing', response.data, params);
-       console.log(response);
       })
       .catch(function (error) {
       // handle error
@@ -101,7 +113,6 @@ function dnsLookup(message) {
           icon_emoji: ''
         };
         bot.postMessageToChannel('bot-testing', response.data, params);
-      console.log(response);
       })
       .catch(function (error) {
       console.log(error);
@@ -116,7 +127,6 @@ function dnsLookup(message) {
           icon_emoji: ''
         };
         bot.postMessageToChannel('bot-testing', response.data, params);
-      console.log(response);
      })
       .catch(function (error) {
       console.log(error);
@@ -131,7 +141,6 @@ function dnsLookup(message) {
           icon_emoji: ''
         };
         bot.postMessageToChannel('bot-testing', response.data, params);
-      console.log(response);
       })
       .catch(function (error) {
       console.log(error);
@@ -146,7 +155,6 @@ function postTXT() {
            icon_emoji: ''
          };
       bot.postMessageToChannel('bot-testing', response.data, params);
-      console.log(response);
     })
     .catch(function (error) {
     console.log(error);
