@@ -17,7 +17,7 @@ whois + (domain) returns contact email, registrant, admin contact, as well as cr
 ## Installation
 **This is a Node.JS app, you must have Node.JS installed on the machine prior to following these instructions**
 
-Most of the work should be in getting the API keys you need from each and plugging it in. 
+Most of the work should be in getting the API keys you need from each and plugging it in. You can define your Slack channel on line 15, how this is handled is subject to change.
 
 For Slack you'll need to specify that you're creating a bot, and that process can be found in [this tutorial](https://www.youtube.com/watch?v=nyyXTIL3Hkw). You'll also need to create a #bot-testing channel on your Slack workspace, but you can replace the code to modify this (typing this out, I should probably make this a variable).
 
