@@ -26,3 +26,9 @@ Check [here](https://whoisapi.whoisxmlapi.com/products) for your Who.Is API key 
 The DNS API should run on it's own, but if you're putting this into production you should [install it on your own instance](https://github.com/skx/dns-api-go).
 
 This is still in testing, but from what I've found you should be able to npm install from there and have it runnning on your Slack workspace.
+
+## FAQ
+
+### My instance is running (getting back the requested data) but my messages aren't posting?
+
+Be sure to invite your bot to the channel you're posting to (the default is #bot-testing, which will need to be created if you don't define a channel you want), it should then post the messages.
