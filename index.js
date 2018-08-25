@@ -12,6 +12,7 @@ const bot = new SlackBot({
 	name: 'Code Noobs Bot'
 });
 
+const slackChannel = 'bot-testing';
 const dnsApi = 'https://dns-api.org/';
 
 // Start Handler
@@ -20,7 +21,7 @@ bot.on('start', () => {
 	icon_emoji: ':linkms:'
 	};
 
-	bot.postMessageToChannel('bot-testing', "Don't panic", params);
+	bot.postMessageToChannel(slackChannel, "Don't panic", params);
 });
 
 // Error Handler
@@ -39,14 +40,18 @@ bot.on('message', (data) => {
 
 // Respond to Data
 function handleMessage(message) {
-    function removeID(message) {
-        // Use Node Buffer to remove ID
+    function removeID() {
+        if(message.includes('@')){ // Use Node Buffer to remove ID
         var buf1 = Buffer.allocUnsafe(26);
         buf1 = message;
         buf2 = buf1.slice(13, buf1.length);
         return buf2.toString('ascii', 0, buf2.length);
         }
-    function removeSlackURL(message){
+        else {
+          return message;
+        }
+        }
+    function removeSlackURL(){
       if(message.includes('|')){
         /* There may be a better way with the Slack API, but this will work
         returns URL as a string without extra formatting. Pre-formatted text appears like:
@@ -61,15 +66,18 @@ function handleMessage(message) {
         console.log(s2);
         return s2;
       }
-      else if(message.includes(' https')){
-        var remBrackets = message.substr(1, message.length-1);
-        var remExt = remBrackets.substr(9, mesage.length);
-        return remExt;
+      else if(message.includes('http')){
+        var endBracket = message.indexOf('>');
+        var remBrackets = message.substr(1, endBracket-1);
+        var indexOfSlash = message.indexOf('/');
+        console.log(remBrackets);
+        var remExt = remBrackets.substr(indexOfSlash+1, message.length);
+        console.log(remExt);
+        return remExt; 
       }
-      else if(message.includes(' http')){
-        var remBrackets = message.substr(1, message.length-1);
-        var remExt = remBrackets.substr(8, mesage.length);
-        return remExt;
+      else {
+        console.log(message);
+        console.log("else");
       }
     }
     if(message.includes(' dns')) {
@@ -87,8 +95,6 @@ function handleMessage(message) {
 
 // Pull and serve DNS NS, A, CNAME, MX, TXT information
 function dnsLookup(message) {
-    
-  
   function postNS() {
     axios.get(dnsApi + '\/NS' + '\/'+ message)
       .then(function (response) {
@@ -96,7 +102,7 @@ function dnsLookup(message) {
           const params = {
             icon_emoji: ''
           };
-          bot.postMessageToChannel('bot-testing', response.data, params);
+          bot.postMessageToChannel(slackChannel, response.data, params);
       })
       .catch(function (error) {
       // handle error
@@ -112,7 +118,7 @@ function dnsLookup(message) {
         const params = {
           icon_emoji: ''
         };
-        bot.postMessageToChannel('bot-testing', response.data, params);
+        bot.postMessageToChannel(slackChannel, response.data, params);
       })
       .catch(function (error) {
       console.log(error);
@@ -126,7 +132,7 @@ function dnsLookup(message) {
         const params = {
           icon_emoji: ''
         };
-        bot.postMessageToChannel('bot-testing', response.data, params);
+        bot.postMessageToChannel(slackChannel, response.data, params);
      })
       .catch(function (error) {
       console.log(error);
@@ -140,7 +146,7 @@ function dnsLookup(message) {
         const params = {
           icon_emoji: ''
         };
-        bot.postMessageToChannel('bot-testing', response.data, params);
+        bot.postMessageToChannel(slackChannel, response.data, params);
       })
       .catch(function (error) {
       console.log(error);
@@ -154,7 +160,7 @@ function postTXT() {
          const params = {
            icon_emoji: ''
          };
-      bot.postMessageToChannel('bot-testing', response.data, params);
+      bot.postMessageToChannel(slackChannel, response.data, params);
     })
     .catch(function (error) {
     console.log(error);
@@ -199,13 +205,13 @@ https.get(url, function (res) {
         try {
             var parsedData = JSON.parse(rawData);
             if (parsedData.WhoisRecord) {
-                bot.postMessageToChannel('bot-testing','Domain name: '+ parsedData.WhoisRecord.domainName);
-                bot.postMessageToChannel('bot-testing','Contact email: '+ parsedData.WhoisRecord.contactEmail);
-                bot.postMessageToChannel('bot-testing','Created date: '+ parsedData.WhoisRecord.createdDate);
-                bot.postMessageToChannel('bot-testing','Updated date: '+ parsedData.WhoisRecord.updatedDate);
-                bot.postMessageToChannel('bot-testing','Expired date: '+ parsedData.WhoisRecord.expiresDate);
-                bot.postMessageToChannel('bot-testing', parsedData.WhoisRecord.registrant.rawText);
-                bot.postMessageToChannel('bot-testing', parsedData.WhoisRecord.administrativeContact.rawText);
+                bot.postMessageToChannel(slackChannel,'Domain name: '+ parsedData.WhoisRecord.domainName);
+                bot.postMessageToChannel(slackChannel,'Contact email: '+ parsedData.WhoisRecord.contactEmail);
+                bot.postMessageToChannel(slackChannel,'Created date: '+ parsedData.WhoisRecord.createdDate);
+                bot.postMessageToChannel(slackChannel,'Updated date: '+ parsedData.WhoisRecord.updatedDate);
+                bot.postMessageToChannel(slackChannel,'Expired date: '+ parsedData.WhoisRecord.expiresDate);
+                bot.postMessageToChannel(slackChannel, parsedData.WhoisRecord.registrant.rawText);
+                bot.postMessageToChannel(slackChannel, parsedData.WhoisRecord.administrativeContact.rawText);
                 
             } else {
                 console.log(parsedData);
