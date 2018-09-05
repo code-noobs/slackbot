@@ -95,85 +95,41 @@ function handleMessage(message) {
 
 // Pull and serve DNS NS, A, CNAME, MX, TXT information
 function dnsLookup(message) {
-  function postNS() {
-    axios.get(dnsApi + '\/NS' + '\/'+ message)
-      .then(function (response) {
-      // handle success
-          const params = {
-            icon_emoji: ''
-          };
-          bot.postMessageToChannel(slackChannel, response.data, params);
-      })
-      .catch(function (error) {
-      // handle error
-      console.log(error);
-      })
-      .then(function () {
-      // always executed
-  });
+  function getNs() {
+    return axios.get(dnsApi + '\/NS' + '\/'+ message);
   }
-  function postA() {
-    axios.get(dnsApi + '\/A' + '\/'+ message)
-      .then(function (response) {
-        const params = {
-          icon_emoji: ''
-        };
-        bot.postMessageToChannel(slackChannel, response.data, params);
-      })
-      .catch(function (error) {
-      console.log(error);
-      })
-      .then(function () {
-});
-}
-  function postCNAME() {
-    axios.get(dnsApi + '\/CNAME' + '\/'+ message)
-      .then(function (response) {
-        const params = {
-          icon_emoji: ''
-        };
-        bot.postMessageToChannel(slackChannel, response.data, params);
-     })
-      .catch(function (error) {
-      console.log(error);
-      })
-      .then(function () {
-});
-}
-  function postMX() {
-    axios.get(dnsApi + '\/MX' + '\/'+ message)
-      .then(function (response) {
-        const params = {
-          icon_emoji: ''
-        };
-        bot.postMessageToChannel(slackChannel, response.data, params);
-      })
-      .catch(function (error) {
-      console.log(error);
-     })
-      .then(function () {
-});
-}
-function postTXT() {
-  axios.get(dnsApi + '\/TXT' + '\/'+ message)
-    .then(function (response) {
-         const params = {
-           icon_emoji: ''
-         };
-      bot.postMessageToChannel(slackChannel, response.data, params);
-    })
-    .catch(function (error) {
-    console.log(error);
-      })
-      .then(function () {
-  });
-}
-      postNS(message);
-      postA(message);
-      postCNAME(message);
-      postMX(message);
-      postTXT(message);
-  
+  function getA() {
+    return axios.get(dnsApi + '\/A' + '\/'+ message);
+  }
+  function getCname() {
+    return axios.get(dnsApi + '\/CNAME' + '\/'+ message);
+  }
+  function getMx() {
+    return axios.get(dnsApi + '\/MX' + '\/'+ message);
+  }
+  function getTxt() {
+    return axios.get(dnsApi + '\/TXT' + '\/'+ message);
+  }
+
+  axios.all([getNs(), getA(), getCname(), getMx(), getTxt()]).then(axios.spread(function (ns, a, cname, mx, txt){
+    const params = {
+      icon_emoji: ''
+    };
+    var data = [];
+    data.ns = ns.data;
+    data.a = a.data;
+    data.cname = cname.data;
+    data.mx = mx.data;
+    data.txt = txt.data;
+
+    for (var key in data){
+      if (data.hasOwnProperty(key)) {
+        console.log(JSON.stringify(data[key]));
+        console.log(key + " -> " + JSON.stringify(data[key]));
+        bot.postMessageToChannel(slackChannel, JSON.stringify(data[key], params))
+      }
+    }
+  }))
 }
 
 // Pull and serve who.is data
