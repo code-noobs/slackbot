@@ -56,15 +56,15 @@ function handleMessage(message) {
         /* There may be a better way with the Slack API, but this will work
         returns URL as a string without extra formatting. Pre-formatted text appears like:
         <http://webbhost.net|webbhost.net> */
-        var n = message.indexOf('|');
-        var o = message.indexOf('>');
-        var n = n+1;
-        var o = o-2;
-        var s1 = message.substr(n, o);
-        var p = s1.indexOf('>');
-        var s2 = s1.substr(0, p);
-        console.log(s2);
-        return s2;
+        let strBegin = message.indexOf('|')+1;
+        let strEnd = message.indexOf('>');
+        
+        console.log(strEnd);
+        console.log(message.length + message);
+        let results = message.substring(strBegin, strEnd);
+        
+        console.log(results);
+        return results;
       }
       else if(message.includes('http')){
         var endBracket = message.indexOf('>');
@@ -111,7 +111,8 @@ function dnsLookup(message) {
     return axios.get(dnsApi + '\/TXT' + '\/'+ message);
   }
 
-  axios.all([getNs(), getA(), getCname(), getMx(), getTxt()]).then(axios.spread(function (ns, a, cname, mx, txt){
+  axios.all([getNs(), getA(), getCname(), getMx(), getTxt()])
+  .then(axios.spread(function (ns, a, cname, mx, txt){
     const params = {
       icon_emoji: ''
     };
