@@ -13,7 +13,7 @@ const bot = new SlackBot({
 });
 
 const slackChannel = 'bot-testing';
-const dnsApi = 'https://dns-api.org/';
+const dnsApi = 'https://dns-api.org';
 
 // Start Handler
 bot.on('start', () => {
@@ -101,9 +101,6 @@ function dnsLookup(message) {
   function getA() {
     return axios.get(dnsApi + '\/A' + '\/'+ message);
   }
-  function getCname() {
-    return axios.get(dnsApi + '\/CNAME' + '\/'+ message);
-  }
   function getMx() {
     return axios.get(dnsApi + '\/MX' + '\/'+ message);
   }
@@ -111,15 +108,14 @@ function dnsLookup(message) {
     return axios.get(dnsApi + '\/TXT' + '\/'+ message);
   }
 
-  axios.all([getNs(), getA(), getCname(), getMx(), getTxt()])
-  .then(axios.spread(function (ns, a, cname, mx, txt){
+  axios.all([getNs(), getA(), getMx(), getTxt()])
+  .then(axios.spread(function (ns, a, mx, txt){
     const params = {
       icon_emoji: ''
     };
-    var data = [];
+    let data = [];
     data.ns = ns.data;
     data.a = a.data;
-    data.cname = cname.data;
     data.mx = mx.data;
     data.txt = txt.data;
 
@@ -131,6 +127,11 @@ function dnsLookup(message) {
       }
     }
   }))
+  .catch(function (error) {
+    console.log(error);
+    })
+  .then(function () {
+});
 }
 
 // Pull and serve who.is data

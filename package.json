@@ -18,7 +18,7 @@
   "homepage": "https://github.com/code-noobs/slackbot#readme",
   "dependencies": {
     "axios": "^0.18.0",
-    "dotenv": "^6.0.0",
+    "dotenv": "^6.2.0",
     "https": "^1.0.0",
     "querystring": "^0.2.0",
     "slackbots": "^1.1.0"
