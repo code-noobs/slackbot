@@ -76,8 +76,7 @@ function handleMessage(message) {
         return remExt; 
       }
       else {
-        console.log(message);
-        console.log("else");
+        console.log("else78: ", message);
       }
     }
     if(message.includes(' dns')) {
@@ -88,7 +87,7 @@ function handleMessage(message) {
         message = removeID(message)
         message = removeSlackURL(message);
 		    message = whoisLookup(message);
-	}
+  }
 }
 
 
@@ -123,12 +122,27 @@ function dnsLookup(message) {
       if (data.hasOwnProperty(key)) {
         console.log(JSON.stringify(data[key]));
         console.log(key + " -> " + JSON.stringify(data[key]));
-        bot.postMessageToChannel(slackChannel, JSON.stringify(data[key], params))
+        bot.postMessageToChannel(slackChannel, JSON.stringify(data[key]), params)
       }
     }
   }))
   .catch(function (error) {
-    console.log(error);
+    if (error.response) {
+      // Request made and server responded
+      console.log('error.response.data: ', error.response.data);
+      console.log('error.response.status: ', error.response.status);
+      console.log('error.response.headers:', error.response.headers);
+      let errMsg = 'This resulted in a ' + error.response.status + ' status error.';
+      bot.postMessageToChannel(slackChannel, errMsg)
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log('error.request: ', error.request);
+      bot.postMessageToChannel(slackChannel, 'Something went wrong!');
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('error.message', error.message);
+      bot.postMessageToChannel(slackChannel, 'Something went wrong!');
+    }
     })
   .then(function () {
 });
