@@ -2,8 +2,6 @@
 Code Noobs Slackbot for DNS, who.is
 
 
-Inspired by https://github.com/bradtraversy/slack_jokebot/ great tutorial!
-
 End-goal is to have a Slackbot that can take domains and give who.is/DNS records, possibly github repos.
 ### APIs used
 [Slack](https://api.slack.com/) - [Who.Is](https://whoisxmlapi.com/) - [DNS](https://dns-api.org)
@@ -19,7 +17,7 @@ whois + (domain) returns contact email, registrant, admin contact, as well as cr
 
 Most of the work should be in getting the API keys you need from each and plugging it in. You can define your Slack channel on line 15, how this is handled is subject to change.
 
-For Slack you'll need to specify that you're creating a bot, and that process can be found in [this tutorial](https://www.youtube.com/watch?v=nyyXTIL3Hkw). You'll also need to create a #bot-testing or the name you replaced the channel with earlier and invite your bot.
+For Slack you'll need to specify that you're creating a bot, and that process can be found in [this tutorial](https://api.slack.com/bot-users). You'll also need to create a #bot-testing or the name you replaced the channel with earlier and invite your bot.
 
 Check [here](https://whoisapi.whoisxmlapi.com/products) for your Who.Is API key once you've signed up. You'll also be taken to that page when you sign in. It'd be recommended to use something like dotenv to plug these in, but if you just want to get it running you can just replace the variables on lines 11 (Slack) and 149 (Who.Is). 
 
