@@ -8,9 +8,9 @@ End-goal is to have a Slackbot that can take domains and give who.is/DNS records
 
 ### Working commands: 
 
-dns + (domain) returns A, NS, MX, TXT records for (domain)
+(domain) + dns returns A, NS, MX, TXT records for (domain)
 
-whois + (domain) returns contact email, registrant, admin contact, as well as created, updated, expired dates.
+(domain) + whois returns contact email, registrant, admin contact, as well as created, updated, expired dates.
 
 ## Installation
 **This is a Node.JS app, you must have Node.JS installed on the machine prior to following these instructions**
