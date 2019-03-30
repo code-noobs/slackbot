@@ -30,3 +30,7 @@ This is still in testing, but from what I've found you should be able to npm ins
 ### My instance is running (getting back the requested data) but my messages aren't posting?
 
 Be sure to invite your bot to the channel you're posting to (the default is #bot-testing, which will need to be created if you don't define a channel you want), it should then post the messages.
+
+### My instance seems to be running, but won't respond after being idle for ~48 hours?
+
+Ensure your Slackbots module is on version 1.2.0 which introduced ws-heartbeat to avoid websockets closing when idle, and if using pm2 don't run in cluster mode.
